@@ -6,6 +6,7 @@
         onShow: null,
         swipeable: false,
         responsiveThreshold: Infinity, // breakpoint for swipeable
+        activateContent: false,
       };
       options = $.extend(defaults, options);
       var namespace = Materialize.objectSelectorString($(this));
@@ -82,7 +83,7 @@
         index = 0;
       }
 
-      if ($active[0] !== undefined) {
+      if (options.activateContent && $active[0] !== undefined) {
         $content = $($active[0].hash);
         $content.addClass('active');
       }
@@ -143,7 +144,7 @@
             }
           },
         });
-      } else {
+      } else if (options.activateContent) {
         // Hide the remaining content
         $links.not($active).each(function () {
           $(Materialize.escapeHash(this.hash)).hide();
@@ -169,11 +170,11 @@
 
         // Make the old tab inactive.
         $active.removeClass('active');
-        var $oldContent = $content
+        var $oldContent = $content;
 
         // Update the variables with the new link and content
         $active = $(this);
-        $content = $(Materialize.escapeHash(this.hash));
+        $content = options.activateContent && $(Materialize.escapeHash(this.hash));
         $links = $this.find('li.tab a');
         var activeRect = $active.position();
 
@@ -196,7 +197,7 @@
               }
             });
           }
-        } else {
+        } else if (options.activateContent) {
           if ($content !== undefined) {
             $content.show();
             $content.addClass('active');
@@ -219,7 +220,9 @@
         animateIndicator(prev_index);
 
         // Prevent the anchor's default click action
-        e.preventDefault();
+        if (options.activateContent) {
+          e.preventDefault();
+        }
       });
     });
 
