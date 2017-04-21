@@ -577,5 +577,8 @@
         Waves.init(options);
     };
 
+    // Expose Waves
+    window.Waves = Waves;
+
     return Waves;
 });
