@@ -363,8 +363,15 @@
         var element = null;
         var target = e.target || e.srcElement;
 
-        while (target.parentElement) {
-            if ( (!(target instanceof SVGElement)) && target.classList.contains('waves-effect')) {
+        while (target.parentElement !== null) {
+            if (!(target instanceof SVGElement) && target.className.indexOf('waves-effect') !== -1) {
+                element = target;
+                break;
+            } else if (target instanceof SVGElement &&
+                target.className &&
+                target.className.baseVal &&
+                target.className.baseVal.indexOf('waves-effect') !== -1)
+            {
                 element = target;
                 break;
             }
